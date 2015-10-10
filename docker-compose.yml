@@ -1,19 +1,23 @@
 elasticsearch:
+  restart: always
   build: elasticsearch/
   ports:
     - "9200:9200"
 logstash:
   build: logstash/
+  restart: always
   command: logstash -f /etc/logstash/conf.d/*.conf
   volumes:
     - ./logstash/config:/etc/logstash/conf.d
   ports:
     - "5000:5000"
     - "9995:9995/udp"
+    - "9514:9514/udp"
   links:
     - elasticsearch
 kibana:
   build: kibana/
+  restart: always
   volumes:
     - ./kibana/config/kibana.yml:/opt/kibana/config/kibana.yml
   ports:
