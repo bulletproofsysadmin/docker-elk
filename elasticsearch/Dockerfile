@@ -11,3 +11,9 @@ WORKDIR elastalert
 RUN cd /elastalert python setup.py install
 
 RUN plugin -i elasticsearch/marvel/latest
+
+
+#Override projects entrypoint with my own.  
+COPY docker-entrypoint.sh /
+
+ENTRYPOINT ["/docker-entrypoint.sh"]
