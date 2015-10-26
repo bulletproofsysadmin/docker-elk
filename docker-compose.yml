@@ -24,3 +24,8 @@ kibana:
     - "5601:5601"
   links:
     - elasticsearch
+elastalert:
+  build: elastalert/
+  restart: always
+  links:
+    - elasticsearch
