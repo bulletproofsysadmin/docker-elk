@@ -9,7 +9,7 @@ RUN /opt/logstash/bin/plugin install logstash-filter-translate
 
 
 #Add certificates
-
+ADD certs/* /etc/ssl/certs/
 
 
 EXPOSE 9995
