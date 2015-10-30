@@ -8,5 +8,8 @@ RUN gunzip /etc/logstash/GeoLiteCity.dat.gz
 RUN /opt/logstash/bin/plugin install logstash-filter-translate
 
 
+#Add certificates
+
+
 
 EXPOSE 9995

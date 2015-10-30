@@ -1,0 +1,22 @@
+#!/bin/bash
+
+#This script should be run for each enterprise.
+
+#Cleanup old certs
+rm -f certs/*
+
+echo -n "Creating CA Key \n"
+certtool --generate-privkey --outfile certs/ca-key.pem
+
+echo -n "Creating CA Cert \n"
+certtool --generate-self-signed --load-privkey certs/ca-key.pem --outfile certs/ca.pem
+
+echo -n "Creating CA Key \n"
+certtool --generate-privkey --outfile certs/key.pem
+
+echo -n "Creating CSR \n"
+certtool --generate-request --load-privkey certs/key.pem --outfile certs/request.pem
+
+echo -n "Signing Cert \n"
+certtool --generate-certificate --load-request certs/request.pem --outfile certs/cert.pem --load-ca-certificate certs/ca.pem --load-ca-privkey certs/ca-key.pem
+
