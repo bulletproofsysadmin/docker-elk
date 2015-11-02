@@ -15,9 +15,7 @@ RUN yum install rsyslog-mmnormalize rsyslog-elasticsearch -y
 
 RUN yum install \
 	tar \
-	supervisor \
-        java-1.8.0-openjdk-headless \
-        elasticsearch -y
+	supervisor -y 
 
 COPY rsyslog.conf /etc/rsyslog.conf
 COPY conf.d/00_normalize.conf /etc/rsyslog.d/00_normalize.conf
@@ -34,7 +32,6 @@ COPY conf.d/rules-authpriv.rb /etc/rsyslog.d/rules-authpriv.rb
 
 COPY supervisor/supervisord.conf /etc/supervisord.conf
 COPY supervisor/rsyslog.ini /etc/supervisord.d/rsyslog.ini
-COPY supervisor/elasticsearch.ini /etc/supervisord.d/elasticsearch.ini
 COPY supervisor/firstrun.ini /etc/supervisord.d/firstrun.ini
 
 
