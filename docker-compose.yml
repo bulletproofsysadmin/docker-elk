@@ -1,6 +1,15 @@
 redis:
   image: redis
   restart: always
+rsyslog: 
+  build: rsyslog/
+  restart: always
+  ports:
+     - "514/tcp:514/tcp"
+     - "514/udp:514/udp"
+  links:
+     - elasticsearch
+     - logstash
 elasticsearch:
   restart: always
   build: elasticsearch/
