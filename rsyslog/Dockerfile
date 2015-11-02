@@ -34,29 +34,32 @@ RUN yum install \
 	liblogging-stdlog-devel \
 	python-docutils -y
 
-WORKDIR /root/rsyslog
 
-RUN autoreconf -fvi
+RUN git clone https://github.com/rsyslog/rsyslog /root/rsyslog
+
+WORKDIR /root/rsyslog/
+
+RUN autoreconf -fvi --include=/root/rsyslog
 RUN ./configure --enable-omhiredis
 RUN make
 RUN make install
 
-RUN git clone https://github.com/rsyslog/rsyslog /root/rsyslog
 
 RUN ./root/rsyslog/configure
 
 COPY rsyslog.conf /etc/rsyslog.conf
-COPY conf.d/00_normalize.conf /etc/rsyslog.d/00_normalize.conf
+#COPY conf.d/00_normalize.conf /etc/rsyslog.d/00_normalize.conf
 
 
+COPY conf.d/5_jsonlines.conf /etc/rsyslog.d/5_jsonlines.conf
 COPY conf.d/20_redis.conf /etc/rsyslog.d/20_redis.conf
-COPY conf.d/rules-audit.rb /etc/rsyslog.d/rules-audit.rb
-COPY conf.d/rules-httpderror.rb /etc/rsyslog.d/rules-httpderror.rb
-COPY conf.d/rules-krb5-kdc.rb /etc/rsyslog.d/rules-krb5-kdc.rb
-COPY conf.d/rules-ipa-389-access.rb /etc/rsyslog.d/rules-ipa-389-access.rb
-COPY conf.d/rules-ipa-389-errors.rb /etc/rsyslog.d/rules-ipa-389-errors.rb
-COPY conf.d/rules-sssd.rb /etc/rsyslog.d/rules-sssd.rb
-COPY conf.d/rules-authpriv.rb /etc/rsyslog.d/rules-authpriv.rb
+#COPY conf.d/rules-audit.rb /etc/rsyslog.d/rules-audit.rb
+#COPY conf.d/rules-httpderror.rb /etc/rsyslog.d/rules-httpderror.rb
+#COPY conf.d/rules-krb5-kdc.rb /etc/rsyslog.d/rules-krb5-kdc.rb
+#COPY conf.d/rules-ipa-389-access.rb /etc/rsyslog.d/rules-ipa-389-access.rb
+#COPY conf.d/rules-ipa-389-errors.rb /etc/rsyslog.d/rules-ipa-389-errors.rb
+#COPY conf.d/rules-sssd.rb /etc/rsyslog.d/rules-sssd.rb
+#COPY conf.d/rules-authpriv.rb /etc/rsyslog.d/rules-authpriv.rb
 
 COPY supervisor/supervisord.conf /etc/supervisord.conf
 COPY supervisor/rsyslog.ini /etc/supervisord.d/rsyslog.ini
