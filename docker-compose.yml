@@ -1,3 +1,6 @@
+redis:
+  image: redis
+  restart: always
 elasticsearch:
   restart: always
   build: elasticsearch/
@@ -9,12 +12,9 @@ logstash:
   command: logstash -f /etc/logstash/conf.d/*.conf
   volumes:
     - ./logstash/config:/etc/logstash/conf.d
-  ports:
-    - "5000:5000"
-    - "9995:9995/udp"
-    - "9514:9514/udp"
   links:
     - elasticsearch
+    - redis
 kibana:
   build: kibana/
   restart: always
@@ -22,10 +22,5 @@ kibana:
     - ./kibana/config/kibana.yml:/opt/kibana/config/kibana.yml
   ports:
     - "5601:5601"
-  links:
-    - elasticsearch
-elastalert:
-  build: elastalert/
-  restart: always
   links:
     - elasticsearch

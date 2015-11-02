@@ -30,7 +30,6 @@ WORKDIR /opt
 
 # Copy the script used to launch the Elastalert when a container is started.
 COPY ./start-elastalert.sh /opt/
-
 # Install software required for Elastalert.
 RUN apt-get update && \
     apt-get upgrade -y && \
@@ -90,6 +89,10 @@ RUN python setup.py install && \
 # Add Elastalert to Supervisord.
     supervisord -c ${ELASTALERT_SUPERVISOR_CONF}
 
+
+#Add compose friendly config
+
+COPY ./config.yml /opt/elastalert/
 # Define mount points.
 VOLUME [ "${CONFIG_DIR}", "${RULES_DIRECTORY}", "${LOG_DIR}"]
 
