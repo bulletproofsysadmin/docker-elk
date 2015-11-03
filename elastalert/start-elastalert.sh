@@ -1,7 +1,6 @@
 #!/bin/sh
 
 set -e
-
 # Wait until Elasticsearch is online since otherwise Elastalert will fail.
 rm -f garbage_file
 while ! wget -O garbage_file ${ELASTICSEARCH_PORT_9200_TCP_ADDR}:${ELASTICSEARCH_PORT} 2>/dev/null
@@ -18,6 +17,7 @@ if [ -e "config.yaml" ]
 then
     echo "First-time initialization: Creating Elastalert index"
     elastalert-create-index --index elastalert_status --old-index ""
+
     rm config.yaml
 fi
 

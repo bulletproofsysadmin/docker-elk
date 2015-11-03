@@ -9,7 +9,10 @@ RUN /opt/logstash/bin/plugin install logstash-filter-translate
 
 
 #Add certificates
-ADD certs/* /etc/ssl/certs/
+ADD certs/* /tmp/
+RUN chown -R logstash /tmp/*.pem
+RUN chmod 777 /tmp/*.pem
 
-
+EXPOSE 55514
+EXPOSE 55514/udp
 EXPOSE 9995
