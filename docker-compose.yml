@@ -1,15 +1,19 @@
 redis:
   image: redis
   restart: always
+  ports:
+    - "6379:6379"
 rsyslog: 
   build: rsyslog/
   restart: always
+  volumes: 
+     - ./rsyslog/logstore:/var/log/rsyslog
   ports:
      - "514/tcp:514/tcp"
      - "514/udp:514/udp"
+     - "5514/udp:5514/udp"
   links:
-     - elasticsearch
-     - logstash
+     - redis
 elasticsearch:
   restart: always
   build: elasticsearch/
@@ -24,6 +28,10 @@ logstash:
   links:
     - elasticsearch
     - redis
+  ports:
+    - "55514:55514"
+    - "9995:9995/udp"
+    - "9514/udp:9514/udp"
 kibana:
   build: kibana/
   restart: always

@@ -45,13 +45,10 @@ RUN make
 RUN make install
 
 
-RUN ./root/rsyslog/configure
-
 COPY rsyslog.conf /etc/rsyslog.conf
 #COPY conf.d/00_normalize.conf /etc/rsyslog.d/00_normalize.conf
 
 
-COPY conf.d/5_jsonlines.conf /etc/rsyslog.d/5_jsonlines.conf
 COPY conf.d/20_redis.conf /etc/rsyslog.d/20_redis.conf
 #COPY conf.d/rules-audit.rb /etc/rsyslog.d/rules-audit.rb
 #COPY conf.d/rules-httpderror.rb /etc/rsyslog.d/rules-httpderror.rb
