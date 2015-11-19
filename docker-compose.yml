@@ -1,3 +1,8 @@
+elasticsearch:
+  restart: always
+  build: elasticsearch/
+  ports:
+    - "9200:9200"
 redis:
   image: redis
   restart: always
@@ -13,11 +18,15 @@ rsyslog:
      - "514/udp:514/udp"
   links:
      - redis
-elasticsearch:
+kibana:
+  build: kibana/
   restart: always
-  build: elasticsearch/
+  volumes:
+    - ./kibana/config/kibana.yml:/opt/kibana/config/kibana.yml
   ports:
-    - "9200:9200"
+    - "5601:5601"
+  links:
+    - elasticsearch
 logstash:
   build: logstash/
   restart: always
@@ -30,12 +39,4 @@ logstash:
   ports:
     - "55514/udp:55514/udp"
     - "9995:9995/udp"
-kibana:
-  build: kibana/
-  restart: always
-  volumes:
-    - ./kibana/config/kibana.yml:/opt/kibana/config/kibana.yml
-  ports:
-    - "5601:5601"
-  links:
-    - elasticsearch
+    - "31311:31311/tcp"
