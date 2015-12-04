@@ -30,7 +30,12 @@ For example on Redhat and CentOS, the following will apply the proper context:
 
 # Usage
 
-Start the ELK stack using *docker-compose*:
+First, create a docker bridge network called elk-stack:
+```bash
+$ docker network create elk-stack
+```
+
+Then start the ELK stack using *docker-compose*:
 
 ```bash
 $ docker-compose up

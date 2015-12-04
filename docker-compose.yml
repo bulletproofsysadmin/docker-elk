@@ -1,41 +1,44 @@
 elasticsearch:
+  container_name: "elasticsearch"
   restart: always
   build: elasticsearch/
+  net: "elk-stack"
   ports:
     - "9200:9200"
 redis:
+  container_name: "redis"
   image: redis
   restart: always
+  net: "elk-stack"
   ports:
     - "6379:6379"
-rsyslog: 
+rsyslog:
+  container_name: "rsyslog"
   build: rsyslog/
   restart: always
   volumes: 
      - ./rsyslog/logstore:/var/log/rsyslog
+  net: "elk-stack"
   ports:
      - "514/tcp:514/tcp"
      - "514/udp:514/udp"
-  links:
-     - redis
 kibana:
+  container_name: "kibana"
   build: kibana/
   restart: always
   volumes:
     - ./kibana/config/kibana.yml:/opt/kibana/config/kibana.yml
+  net: "elk-stack"
   ports:
     - "5601:5601"
-  links:
-    - elasticsearch
 logstash:
+  container_name: "logstash"
   build: logstash/
   restart: always
   command: logstash -f /etc/logstash/conf.d/*.conf
   volumes:
     - ./logstash/config:/etc/logstash/conf.d
-  links:
-    - elasticsearch
-    - redis
+  net: "elk-stack"
   ports:
     - "55514/udp:55514/udp"
     - "9995:9995/udp"
